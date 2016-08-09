@@ -17,15 +17,12 @@ csv.register_dialect("textdialect",delimiter='\t')
 
 ### Checking environment variables ###
 cfg.home = os.environ.get("FASTICLIP_PATH")
-if not cfg.home and glob.glob("docs/"):
-	cfg.home = os.getcwd()
 if not cfg.home:
-	print "Error: Environment variable FASTICLIP_PATH not found. Please set it to the FAST-iCLIP installation directory."
-	exit()
-if not glob.glob(cfg.home + "/docs/"):
-	print "Error: docs folder not inside FASTICLIP_PATH. Make sure this environment variable is set correctly, or \
-	that you have run ./configure inside the installation directory."
-	exit()
+    cfg.home = os.getcwd()
+
+if not os.path.exists(os.path.join(cfg.home, "docs")):
+    print "Error: Environment variable FASTICLIP_PATH not found. Please set it to the FAST-iCLIP installation directory."
+    exit()
 
 ### Parsing arguments ###
 parser = argparse.ArgumentParser(description="FAST-iCLIP: a pipeline to process iCLIP data", epilog="Example: fasticlip -i rawdata/example_MMhur_R1.fastq rawdata/example_MMhur_R2.fastq --mm9 -n MMhur -o results")
